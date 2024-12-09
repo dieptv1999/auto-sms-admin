@@ -1,0 +1,85 @@
+import {toast} from '@/components/ui/use-toast'
+import axios, {AxiosError, HttpStatusCode} from 'axios'
+import axiosRetry from "axios-retry";
+
+console.log(import.meta.env.VITE_BASE_DOMAIN)
+export const BASE_DOMAIN = import.meta.env.VITE_BASE_DOMAIN
+export const BASE_URL = `${BASE_DOMAIN}/auto-sms/v1`
+
+const instance = axios.create({
+    baseURL: BASE_URL,
+})
+
+export default instance
+
+const errorHandler = (error: any) => {
+    toast({
+        title: `${error.response.data.message}`,
+        draggable: true,
+        variant: 'destructive',
+
+    })
+
+    return Promise.reject({...error})
+}
+
+instance.interceptors.request.use(config => {
+    if (localStorage.getItem('token'))
+        config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
+
+    return config
+})
+
+instance.interceptors.response.use(
+    (response) => {
+
+        return response
+    },
+    async (error) => {
+        const originalRequest = error.config
+        const serverCallUrl = originalRequest.url
+        const status = error.response.status
+        console.debug(error.response, serverCallUrl)
+
+        if (status === 401 && !window.location.href?.includes('/sign-in') && !serverCallUrl?.includes('/refresh')) {
+            const refresh_token = localStorage.getItem('refresh_token')
+
+            if (refresh_token) {
+                // * refresh token
+                await refreshToken(error, () => {
+                    localStorage.removeItem('token')
+                    window.location.href = '/sign-in'
+                })
+            } else {
+                localStorage.removeItem('token')
+                window.location.href = '/sign-in'
+            }
+        } else return errorHandler(error)
+    })
+
+axiosRetry(instance, { retries: 2 });
+
+const refreshToken = async (_error: AxiosError, logout: any) => {
+    try {
+        const refresh_token = localStorage.getItem('refresh_token')
+        const resp = await axios.get(`${BASE_URL}/auth/refresh`, {
+            headers: {
+                ...instance.defaults.headers.common,
+                Authorization: `Bearer ${refresh_token}`
+            }
+        });
+        if (resp?.status === HttpStatusCode.Ok) {
+            localStorage.setItem('token', resp.data?.token)
+            window.dispatchEvent(new Event('storage'))
+
+            instance.defaults.headers.common['Authorization'] = resp.data
+        } else {
+            localStorage.removeItem('refresh_token')
+            logout()
+        }
+    } catch (error) {
+        localStorage.removeItem('refresh_token')
+        logout();
+        return;
+    }
+}
