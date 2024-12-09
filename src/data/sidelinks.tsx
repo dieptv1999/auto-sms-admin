@@ -1,9 +1,4 @@
-import {
-  IconChartHistogram,
-  IconLayoutDashboard,
-  IconSettings,
-  IconUsers,
-} from '@tabler/icons-react'
+import {IconChartHistogram, IconLayoutDashboard, IconUsers,} from '@tabler/icons-react'
 
 export interface NavLink {
   title: string

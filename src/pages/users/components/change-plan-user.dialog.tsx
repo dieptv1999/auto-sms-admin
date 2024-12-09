@@ -43,7 +43,7 @@ export default function ChangePlanUserDialog() {
         mode: 'onChange',
     })
 
-    const { fields, append, update } = useFieldArray({
+    const { fields, update } = useFieldArray({
         control: form.control,
         name: "stores",
     });

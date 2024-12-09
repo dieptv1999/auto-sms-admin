@@ -1,7 +1,5 @@
-import { ColumnDef } from '@tanstack/react-table'
-
-import { Checkbox } from '@/components/ui/checkbox'
-import { DataTableColumnHeader } from './data-table-column-header'
+import {ColumnDef} from '@tanstack/react-table'
+import {DataTableColumnHeader} from './data-table-column-header'
 
 export const columns: ColumnDef<any>[] = [
   // {

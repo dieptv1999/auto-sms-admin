@@ -1,8 +1,6 @@
 import {Layout} from '@/components/custom/layout'
 import {Card, CardContent, CardHeader, CardTitle,} from '@/components/ui/card'
-import {Search} from '@/components/search'
 import ThemeSwitch from '@/components/theme-switch'
-import {TopNav} from '@/components/top-nav'
 import {UserNav} from '@/components/user-nav'
 import {useTranslations} from 'use-intl'
 import {IconPlayerPlay, IconUsers} from "@tabler/icons-react";
@@ -15,6 +13,7 @@ export default function Dashboard() {
     const t = useTranslations('dashboard')
 
     const fetchData = () => {
+        setData({})
     }
 
     useEffect(() => {
@@ -104,26 +103,3 @@ export default function Dashboard() {
         </Layout>
     )
 }
-
-const topNav = [
-    {
-        title: 'dashboard.overview',
-        href: 'dashboard/overview',
-        isActive: true,
-    },
-    {
-        title: 'dashboard.customers',
-        href: 'dashboard/customers',
-        isActive: false,
-    },
-    {
-        title: 'dashboard.products',
-        href: 'dashboard/products',
-        isActive: false,
-    },
-    {
-        title: 'dashboard.settings',
-        href: 'dashboard/settings',
-        isActive: false,
-    },
-]
