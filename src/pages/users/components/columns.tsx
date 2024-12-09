@@ -3,6 +3,7 @@ import {ColumnDef} from '@tanstack/react-table'
 import {Badge} from '@/components/ui/badge'
 import {DataTableColumnHeader} from './data-table-column-header'
 import {DataTableRowActions} from './data-table-row-actions'
+import {formatCreatedDate} from "@/lib/utils.ts";
 
 export const columns: ColumnDef<any>[] = [
     {
@@ -35,6 +36,36 @@ export const columns: ColumnDef<any>[] = [
                 <div className='flex space-x-2'>
                     <span className='max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]'>
             {row.original.firstName}
+          </span>
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: 'license',
+        header: ({column}) => (
+            <DataTableColumnHeader column={column} title='License Key'/>
+        ),
+        cell: ({row}) => {
+            return (
+                <div className='flex space-x-2'>
+                    <span className='max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]'>
+            {row.original.license}
+          </span>
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: 'expireLicense',
+        header: ({column}) => (
+            <DataTableColumnHeader column={column} title='Ngày hết hạn license'/>
+        ),
+        cell: ({row}) => {
+            return (
+                <div className='flex space-x-2'>
+                    <span className='max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]'>
+            {formatCreatedDate(row.original.expireLicense)}
           </span>
                 </div>
             )
