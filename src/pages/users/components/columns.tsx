@@ -33,7 +33,6 @@ export const columns: ColumnDef<any>[] = [
         cell: ({row}) => {
             return (
                 <div className='flex space-x-2'>
-                    <Badge variant='outline'>{row.getValue('email')}</Badge>
                     <span className='max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]'>
             {row.original.firstName}
           </span>

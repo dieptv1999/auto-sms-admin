@@ -5,10 +5,10 @@ const resource = '/auth'
 
 export default {
   login(payload: UserInterface) {
-    return BaseRepository.post(`${resource}/login`, payload)
+    return BaseRepository.post(`${resource}/admin/login`, payload)
   },
   register(payload: UserInterface) {
-    return BaseRepository.post(`${resource}/register`, payload)
+    return BaseRepository.post(`${resource}/admin/create-user`, payload)
   },
   checkGithubAuth() {
     return BaseRepository.get(`${resource}/github/check`)

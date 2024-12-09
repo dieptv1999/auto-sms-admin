@@ -40,7 +40,7 @@ const router = createBrowserRouter([
                     {
                         path: 'analysis',
                         lazy: async () => ({
-                            Component: (await import('@/components/coming-soon')).default,
+                            Component: (await import('@/pages/message-log')).default,
                         }),
                     },
                     {

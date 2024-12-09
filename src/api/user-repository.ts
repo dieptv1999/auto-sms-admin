@@ -28,5 +28,11 @@ export default {
     },
     upgradePlan(payload: any) {
         return BaseRepository.put(`${resource}/upgrade-plan`, payload)
-    }
+    },
+    lock(id: string) {
+        return BaseRepository.put(`${resource}/lock/${id}`)
+    },
+    unlock(id: string) {
+        return BaseRepository.put(`${resource}/unlock/${id}`)
+    },
 }

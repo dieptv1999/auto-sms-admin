@@ -39,6 +39,16 @@ export const columns: ColumnDef<any>[] = [
         enableHiding: false,
     },
     {
+        accessorKey: 'deviceId',
+        header: ({column}) => (
+            <DataTableColumnHeader column={column} title='Device Id'/>
+        ),
+        cell: ({row}) => <div
+            className='w-[50px] whitespace-nowrap overflow-hidden overflow-ellipsis'>{row.getValue('deviceId')}</div>,
+        enableSorting: false,
+        enableHiding: false,
+    },
+    {
         accessorKey: 'os',
         header: ({column}) => (
             <DataTableColumnHeader column={column} title='Operting System'/>

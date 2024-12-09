@@ -1,11 +1,7 @@
 import {
-  IconBoxSeam,
-  IconBuildingStore,
-  IconChartHistogram, IconCirclePlus,
-  IconLayoutDashboard, IconNews,
-  IconRouteAltLeft,
+  IconChartHistogram,
+  IconLayoutDashboard,
   IconSettings,
-  IconTruck,
   IconUsers,
 } from '@tabler/icons-react'
 
@@ -39,10 +35,10 @@ export const sidelinks: SideLink[] = [
     href: '/analysis',
     icon: <IconChartHistogram size={18} />,
   },
-  {
-    title: 'sidebar.settings',
-    label: '',
-    href: '/settings',
-    icon: <IconSettings size={18} />,
-  },
+  // {
+  //   title: 'sidebar.settings',
+  //   label: '',
+  //   href: '/settings',
+  //   icon: <IconSettings size={18} />,
+  // },
 ]

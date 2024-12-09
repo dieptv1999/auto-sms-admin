@@ -24,9 +24,9 @@ export default function Dashboard() {
         <Layout>
             {/* ===== Top Heading ===== */}
             <Layout.Header>
-                <TopNav links={topNav}/>
+                {/* <TopNav links={topNav}/> */}
                 <div className='ml-auto flex items-center space-x-4'>
-                    <Search/>
+                    {/* <Search/> */}
                     <ThemeSwitch/>
                     {/*<LanguageSwitch />*/}
                     <UserNav/>
