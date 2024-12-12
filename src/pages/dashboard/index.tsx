@@ -3,7 +3,7 @@ import {Card, CardContent, CardHeader, CardTitle,} from '@/components/ui/card'
 import ThemeSwitch from '@/components/theme-switch'
 import {UserNav} from '@/components/user-nav'
 import {useTranslations} from 'use-intl'
-import {IconPlayerPlay, IconUsers} from "@tabler/icons-react";
+import {IconUsers} from "@tabler/icons-react";
 import {useEffect, useState} from "react";
 import {useAuth} from "@/context/auth.tsx";
 
@@ -40,7 +40,7 @@ export default function Dashboard() {
                     </h1>
                 </div>
                 <div className='space-y-4'>
-                    <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+                    <div className='grid gap-4 sm:grid-cols-2'>
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                 <CardTitle className="text-sm font-medium">
@@ -66,30 +66,6 @@ export default function Dashboard() {
                                 <div className="text-2xl font-bold">{data?.totalUserInDay}</div>
                                 {/*<p className="text-xs text-muted-foreground">*/}
                                 {/*  +180.1% from last month*/}
-                                {/*</p>*/}
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Total videos</CardTitle>
-                                <IconPlayerPlay/>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{data?.totalVideo}</div>
-                                {/*<p className="text-xs text-muted-foreground">*/}
-                                {/*  +19% from last month*/}
-                                {/*</p>*/}
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Total videos in day</CardTitle>
-                                <IconPlayerPlay/>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{data?.totalInDay}</div>
-                                {/*<p className="text-xs text-muted-foreground">*/}
-                                {/*  +19% from last month*/}
                                 {/*</p>*/}
                             </CardContent>
                         </Card>

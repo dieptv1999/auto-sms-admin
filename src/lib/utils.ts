@@ -35,7 +35,7 @@ export const getGoogleUrl = (from: string) => {
 
 export const formatCreatedDate = (createdAt: Date | undefined) => {
   if (!createdAt) return ''
-  return format(new Date(), 'dd/MM/yyyy HH:mm')
+  return format(createdAt, 'dd/MM/yyyy HH:mm')
 }
 
 export function nFormatter(num: number, digits: number) {

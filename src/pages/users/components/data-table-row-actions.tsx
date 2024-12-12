@@ -1,7 +1,7 @@
-import { DotsHorizontalIcon } from '@radix-ui/react-icons'
-import { Row } from '@tanstack/react-table'
+import {DotsHorizontalIcon} from '@radix-ui/react-icons'
+import {Row} from '@tanstack/react-table'
 
-import { Button } from '@/components/custom/button'
+import {Button} from '@/components/custom/button'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -9,12 +9,13 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Link } from "react-router-dom";
-import { RepositoryFactory } from '@/api/repository-factory';
-import { AxiosResponse, HttpStatusCode } from 'axios';
-import { toast } from '@/components/ui/use-toast';
-import { useState } from 'react';
-import { NumberParam, useQueryParam } from 'use-query-params';
+import {Link} from "react-router-dom";
+import {RepositoryFactory} from '@/api/repository-factory';
+import {AxiosResponse, HttpStatusCode} from 'axios';
+import {toast} from '@/components/ui/use-toast';
+import {useState} from 'react';
+import {NumberParam, useQueryParam} from 'use-query-params';
+import {useUser} from "@/lib/store/userStore.ts";
 
 const UserRepository = RepositoryFactory.get('user')
 
@@ -22,8 +23,9 @@ interface DataTableRowActionsProps<TData> {
     row: Row<TData>
 }
 
-export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TData>) {
+export function DataTableRowActions<TData>({row}: DataTableRowActionsProps<TData>) {
     const [v, setV] = useQueryParam('v', NumberParam);
+    const {setChangePlanData} = useUser();
     const d: any = row.original;
     const [loading, setLoading] = useState(false);
 
@@ -44,13 +46,13 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
                     })
                 }
             }).catch(() => {
-                toast({
-                    title: 'Khóa người dùng thất bại. Vui lòng thử lại',
-                    variant: 'destructive'
-                })
-            }).finally(() => {
-                setLoading(false)
+            toast({
+                title: 'Khóa người dùng thất bại. Vui lòng thử lại',
+                variant: 'destructive'
             })
+        }).finally(() => {
+            setLoading(false)
+        })
     }
 
     const unlockUser = () => {
@@ -70,13 +72,13 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
                     })
                 }
             }).catch(() => {
-                toast({
-                    title: 'Mở khóa người dùng thất bại. Vui lòng thử lại',
-                    variant: 'destructive'
-                })
-            }).finally(() => {
-                setLoading(false)
+            toast({
+                title: 'Mở khóa người dùng thất bại. Vui lòng thử lại',
+                variant: 'destructive'
             })
+        }).finally(() => {
+            setLoading(false)
+        })
     }
 
     return (
@@ -86,12 +88,12 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
                     variant='ghost'
                     className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'
                 >
-                    <DotsHorizontalIcon className='h-4 w-4' />
+                    <DotsHorizontalIcon className='h-4 w-4'/>
                     <span className='sr-only'>Open menu</span>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end' className='w-[260px]'>
-            <DropdownMenuItem asChild>
+                <DropdownMenuItem asChild>
                     <Link to={`/user/log/${row.getValue('id')}`}>
                         Xem log gửi tin nhắn
                     </Link>
@@ -101,10 +103,16 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
                         Xem lịch sử hoạt động
                     </Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                {d.status === 'ACTIVE' ? <DropdownMenuItem onClick={lockUser}>
-                    Khóa người dùng
+                <DropdownMenuSeparator/>
+                <DropdownMenuItem onClick={() => {
+                    setChangePlanData(d)
+                }}>
+                    Cập nhật license cho người dùng
                 </DropdownMenuItem>
+                <DropdownMenuSeparator/>
+                {d.status === 'ACTIVE' ? <DropdownMenuItem onClick={lockUser}>
+                        Khóa người dùng
+                    </DropdownMenuItem>
                     : <DropdownMenuItem onClick={unlockUser}>
                         Mở khóa người dùng
                     </DropdownMenuItem>}

@@ -23,8 +23,8 @@ export default {
     top5() {
         return BaseRepository.get(`${resource}/top`)
     },
-    updateNumDayDeleteVideo(userId: string, payload: any) {
-        return BaseRepository.patch(`${resource}/${userId}/update-num-day-del-video`, payload)
+    updateLicense(payload: any) {
+        return BaseRepository.put(`${resource}/update-license`, payload)
     },
     upgradePlan(payload: any) {
         return BaseRepository.put(`${resource}/upgrade-plan`, payload)
