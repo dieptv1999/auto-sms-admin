@@ -94,7 +94,7 @@ export function DataTableRowActions<TData>({row}: DataTableRowActionsProps<TData
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end' className='w-[260px]'>
                 <DropdownMenuItem asChild>
-                    <Link to={`/user/log/${row.getValue('id')}`}>
+                    <Link to={`/user/log/${row.getValue('username')}`}>
                         Xem log gửi tin nhắn
                     </Link>
                 </DropdownMenuItem>

@@ -22,10 +22,11 @@ const router = createBrowserRouter([
                     {
                         index: true,
                         lazy: async () => ({
-                            Component: (await import('./pages/dashboard')).default,
+                            Component: (await import('./pages/users')).default,
                         }),
                     },
                     {
+                        // index: true,
                         path: 'users',
                         lazy: async () => ({
                             Component: (await import('@/pages/users')).default,
@@ -35,6 +36,12 @@ const router = createBrowserRouter([
                         path: 'user/:id',
                         lazy: async () => ({
                             Component: (await import('@/pages/user-activity')).default,
+                        }),
+                    },
+                    {
+                        path: 'user/log/:id',
+                        lazy: async () => ({
+                            Component: (await import('@/pages/user-logs')).default,
                         }),
                     },
                     {

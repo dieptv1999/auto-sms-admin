@@ -53,12 +53,14 @@ export function DataTable<TData, TValue>({
             sorting,
             columnVisibility,
             rowSelection,
+            columnFilters,
             pagination: page
         },
         pageCount: Math.ceil(totalCount / 10),
         enableRowSelection: true,
         onRowSelectionChange: setRowSelection,
         onSortingChange: setSorting,
+        onColumnFiltersChange: setColumnFilters,
         onColumnVisibilityChange: setColumnVisibility,
         getCoreRowModel: getCoreRowModel(),
         // getFilteredRowModel: getFilteredRowModel(),
@@ -85,7 +87,7 @@ export function DataTable<TData, TValue>({
 
     return (
         <div className='space-y-4'>
-          <DataTableToolbar table={table} setColumnFilters={setColumnFilters} />
+          <DataTableToolbar table={table} />
             <div className='rounded-md border'>
                 <Table>
                     <TableHeader>

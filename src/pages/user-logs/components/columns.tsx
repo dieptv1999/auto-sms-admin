@@ -1,6 +1,5 @@
 import {ColumnDef} from '@tanstack/react-table'
 import {DataTableColumnHeader} from './data-table-column-header'
-import {Link} from "react-router-dom";
 import {Badge} from "@/components/ui/badge.tsx";
 import {formatCreatedDate} from "@/lib/utils.ts";
 
@@ -34,7 +33,7 @@ export const columns: ColumnDef<any>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Tài khoản' />
     ),
-    cell: ({ row }) => <Link to={`/user/log/${row.getValue('createdBy')}`} className='w-[80px] text-primary underline cursor-pointer'>{row.getValue('createdBy')}</Link>,
+    cell: ({ row }) => <div className='w-[80px]'>{row.getValue('createdBy')}</div>,
     enableSorting: false,
     enableHiding: false,
   },
@@ -46,7 +45,7 @@ export const columns: ColumnDef<any>[] = [
     cell: ({ row }) => {
       return (
         <div className='flex space-x-2'>
-          <span className='max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]'>
+          <span className='max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem] text-primary underline'>
             {row.getValue('customerPhone')}
           </span>
         </div>
