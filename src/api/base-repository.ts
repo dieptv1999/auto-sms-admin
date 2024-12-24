@@ -17,7 +17,6 @@ const errorHandler = (error: any) => {
         title: `${error.response.data.message}`,
         draggable: true,
         variant: 'destructive',
-
     })
 
     return Promise.reject({...error})
@@ -37,8 +36,8 @@ instance.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config
         const serverCallUrl = originalRequest.url
-        const status = error.response.status
-        console.debug(error.response, serverCallUrl)
+        const status = error.response?.data?.status
+        console.debug(error.response?.data, serverCallUrl)
 
         if (status === 401 && !window.location.href?.includes('/sign-in') && !serverCallUrl?.includes('/refresh')) {
             const refresh_token = localStorage.getItem('refresh_token')
