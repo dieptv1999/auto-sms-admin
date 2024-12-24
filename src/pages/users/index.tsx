@@ -60,7 +60,7 @@ export default function UsersPage() {
                         </div>
                         <div>
                             <Button onClick={() => setRegisting(true)}>
-                                Create User
+                                Tạo người dùng
                             </Button>
                         </div>
                     </div>
