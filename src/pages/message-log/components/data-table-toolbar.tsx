@@ -41,7 +41,9 @@ export function DataTableToolbar<TData>({
     const isFiltered = user || date
     const [loadingSearchUser, setLoadingSearchUser] = useState<boolean>(false)
 
-    const search = debounce(() => {
+    const search = debounce(({prevUser}:{prevUser?: string}) => {
+        const u = prevUser || user
+        console.log(u)
         let s: any[] = []
         if (date) {
             if (date.from) {
@@ -59,10 +61,10 @@ export function DataTableToolbar<TData>({
             }
         }
 
-        if (user) {
+        if (u) {
             s = [...s, {
                 id: 'createdBy',
-                value: user,
+                value: u,
             }]
         }
 
@@ -128,9 +130,10 @@ export function DataTableToolbar<TData>({
                                             key={u}
                                             value={u}
                                             onSelect={(currentValue) => {
-                                                setUser(currentValue === user ? "" : currentValue)
+                                                const v = currentValue === user ? "" : currentValue
+                                                setUser(v)
                                                 setOpen(false)
-                                                setTimeout(search, 1000)
+                                                search({prevUser: v})
                                             }}
                                         >
                                             <CheckIcon
@@ -188,7 +191,7 @@ export function DataTableToolbar<TData>({
                         <Button
                             variant='default'
                             size={'icon'}
-                            onClick={search}
+                            onClick={() => search({})}
                         >
                             <SearchIcon className='h-4 w-4'/>
                         </Button>
