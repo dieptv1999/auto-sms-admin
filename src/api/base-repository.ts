@@ -37,7 +37,7 @@ instance.interceptors.response.use(
         const originalRequest = error.config
         const serverCallUrl = originalRequest.url
         const status = error.response?.data?.status
-        console.debug(error.response?.data, serverCallUrl)
+        console.log(error.response?.data, serverCallUrl)
 
         if (status === 401 && !window.location.href?.includes('/sign-in') && !serverCallUrl?.includes('/refresh')) {
             const refresh_token = localStorage.getItem('refresh_token')
