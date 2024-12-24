@@ -1,5 +1,5 @@
 import {toast} from '@/components/ui/use-toast'
-import axios, {AxiosError, HttpStatusCode} from 'axios'
+import axios, {AxiosResponse, HttpStatusCode} from 'axios'
 import axiosRetry from "axios-retry";
 
 console.log(import.meta.env.VITE_BASE_DOMAIN)
@@ -30,7 +30,27 @@ instance.interceptors.request.use(config => {
 })
 
 instance.interceptors.response.use(
-    (response) => {
+    async (response) => {
+        console.log(response)
+        const originalRequest = response.config
+        const serverCallUrl = originalRequest.url
+        const status = response?.data?.status
+        console.log(status, serverCallUrl)
+
+        if (status == 401 && !window.location.href?.includes('/sign-in') && !serverCallUrl?.includes('/refresh')) {
+            const refresh_token = localStorage.getItem('refresh_token')
+
+            if (refresh_token) {
+                // * refresh token
+                await refreshToken(response, () => {
+                    localStorage.removeItem('token')
+                    window.location.href = '/sign-in'
+                })
+            } else {
+                localStorage.removeItem('token')
+                window.location.href = '/sign-in'
+            }
+        }
         return response.data
     },
     async (error) => {
@@ -57,7 +77,7 @@ instance.interceptors.response.use(
 
 axiosRetry(instance, { retries: 2 });
 
-const refreshToken = async (_error: AxiosError, logout: any) => {
+const refreshToken = async (_error: AxiosResponse, logout: any) => {
     try {
         const refresh_token = localStorage.getItem('refresh_token')
         const resp = await axios.get(`${BASE_URL}/auth/refresh`, {
