@@ -130,7 +130,7 @@ export function DataTableToolbar<TData>({
                                             onSelect={(currentValue) => {
                                                 setUser(currentValue === user ? "" : currentValue)
                                                 setOpen(false)
-                                                setTimeout(search, 500)
+                                                setTimeout(search, 1000)
                                             }}
                                         >
                                             <CheckIcon
