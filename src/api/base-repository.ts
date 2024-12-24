@@ -31,11 +31,9 @@ instance.interceptors.request.use(config => {
 
 instance.interceptors.response.use(
     async (response) => {
-        console.log(response)
         const originalRequest = response.config
         const serverCallUrl = originalRequest.url
         const status = response?.data?.status
-        console.log(status, serverCallUrl)
 
         if (status == 401 && !window.location.href?.includes('/sign-in') && !serverCallUrl?.includes('/refresh')) {
             const refresh_token = localStorage.getItem('refresh_token')
@@ -57,7 +55,7 @@ instance.interceptors.response.use(
         const originalRequest = error.config
         const serverCallUrl = originalRequest.url
         const status = error.response?.data?.status
-        console.log(error.response?.data, serverCallUrl)
+        console.debug(error.response?.data, serverCallUrl)
 
         if (status === 401 && !window.location.href?.includes('/sign-in') && !serverCallUrl?.includes('/refresh')) {
             const refresh_token = localStorage.getItem('refresh_token')
