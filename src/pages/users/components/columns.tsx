@@ -27,9 +27,9 @@ export const columns: ColumnDef<any>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: 'email',
+        accessorKey: 'firstName',
         header: ({column}) => (
-            <DataTableColumnHeader column={column} title='Email'/>
+            <DataTableColumnHeader column={column} title='Tên người dùng'/>
         ),
         cell: ({row}) => {
             return (
