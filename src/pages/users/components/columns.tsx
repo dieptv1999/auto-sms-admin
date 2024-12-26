@@ -7,12 +7,12 @@ import {formatCreatedDate} from "@/lib/utils.ts";
 
 export const columns: ColumnDef<any>[] = [
     {
-        accessorKey: 'id',
+        accessorKey: 'deviceId',
         header: ({column}) => (
-            <DataTableColumnHeader column={column} title='ID'/>
+            <DataTableColumnHeader column={column} title='Device ID'/>
         ),
         cell: ({row}) => <div
-            className='w-[200px] whitespace-nowrap overflow-hidden overflow-ellipsis'>{row.getValue('id')}</div>,
+            className='w-[200px] whitespace-nowrap overflow-hidden overflow-ellipsis'>{row.getValue('deviceId')}</div>,
         enableSorting: false,
         enableHiding: false,
     },
