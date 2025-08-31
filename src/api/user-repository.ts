@@ -35,4 +35,7 @@ export default {
     unlock(id: string) {
         return BaseRepository.put(`${resource}/unlock/${id}`)
     },
+  updateLicenseKey(id: string) {
+    return BaseRepository.put(`${resource}/update-license/${id}`)
+  },
 }

@@ -1,4 +1,8 @@
-import {IconChartHistogram, IconUsers,} from '@tabler/icons-react'
+import {
+  IconChartHistogram,
+  IconSettings,
+  IconUsers,
+} from '@tabler/icons-react'
 
 export interface NavLink {
   title: string
@@ -30,10 +34,10 @@ export const sidelinks: SideLink[] = [
     href: '/analysis',
     icon: <IconChartHistogram size={18} />,
   },
-  // {
-  //   title: 'sidebar.settings',
-  //   label: '',
-  //   href: '/settings',
-  //   icon: <IconSettings size={18} />,
-  // },
+  {
+    title: 'sidebar.changepass',
+    label: '',
+    href: '/change-pass',
+    icon: <IconSettings size={18} />,
+  },
 ]

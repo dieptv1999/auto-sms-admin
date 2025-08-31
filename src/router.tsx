@@ -50,6 +50,12 @@ const router = createBrowserRouter([
                             Component: (await import('@/pages/message-log')).default,
                         }),
                     },
+                  {
+                    path: 'change-pass',
+                    lazy: async () => ({
+                      Component: (await import('@/pages/change-pass')).default,
+                    }),
+                  },
                     {
                         path: 'settings',
                         lazy: async () => ({

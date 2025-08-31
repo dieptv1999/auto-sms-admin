@@ -16,6 +16,16 @@ import {toast} from '@/components/ui/use-toast';
 import {useState} from 'react';
 import {NumberParam, useQueryParam} from 'use-query-params';
 import {useUser} from "@/lib/store/userStore.ts";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 const UserRepository = RepositoryFactory.get('user')
 
@@ -28,6 +38,7 @@ export function DataTableRowActions<TData>({row}: DataTableRowActionsProps<TData
     const {setChangePlanData} = useUser();
     const d: any = row.original;
     const [loading, setLoading] = useState(false);
+    const [openChangeLicenseKey, setOpenLicenseKey] = useState(false);
 
     const lockUser = () => {
         if (loading) return;
@@ -81,8 +92,35 @@ export function DataTableRowActions<TData>({row}: DataTableRowActionsProps<TData
         })
     }
 
+  const updateLicenseKey = () => {
+    if (loading) return;
+    setLoading(true)
+    UserRepository.updateLicenseKey(d.id)
+      .then((resp: AxiosResponse) => {
+        if (resp.status === HttpStatusCode.Ok) {
+          toast({
+            title: 'Cập nhật mã license người dùng thành công'
+          })
+          setV((v ?? 0) + 1)
+        } else {
+          toast({
+            title: 'Cập nhật mã người dùng thất bại. Vui lòng thử lại',
+            variant: 'destructive'
+          })
+        }
+      }).catch(() => {
+      toast({
+        title: 'Cập nhật mã người dùng thất bại. Vui lòng thử lại',
+        variant: 'destructive'
+      })
+    }).finally(() => {
+      setLoading(false)
+    })
+  }
+
     return (
-        <DropdownMenu>
+      <>
+        <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
                 <Button
                     variant='ghost'
@@ -109,6 +147,9 @@ export function DataTableRowActions<TData>({row}: DataTableRowActionsProps<TData
                 }}>
                     Cập nhật license cho người dùng
                 </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setOpenLicenseKey(true)}>
+                Cập nhật mã license
+              </DropdownMenuItem>
                 <DropdownMenuSeparator/>
                 {d.status === 'ACTIVE' ? <DropdownMenuItem onClick={lockUser}>
                         Khóa người dùng
@@ -118,5 +159,20 @@ export function DataTableRowActions<TData>({row}: DataTableRowActionsProps<TData
                     </DropdownMenuItem>}
             </DropdownMenuContent>
         </DropdownMenu>
+        <AlertDialog open={openChangeLicenseKey} onOpenChange={setOpenLicenseKey}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Bạn có chắn chắn muốn cập nhật mã của người dùng này?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Khi cập nhật mã của người dùng này. Mã cũ sẽ hết hạn ngay lập tức.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Đóng</AlertDialogCancel>
+              <AlertDialogAction onClick={updateLicenseKey}>Tiếp tục</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+        </>
     )
 }

@@ -30,6 +30,9 @@ export default {
   forgotPass(payload: UserInterface) {
     return BaseRepository.post(`${resource}/reset`, payload)
   },
+  changePassAdmin(payload: any) {
+    return BaseRepository.post(`${resource}/admin/change-pass`, payload)
+  },
   switchEnv(envId: string) {
     return BaseRepository.post(`${resource}/environments/${envId}/switch`)
   },
