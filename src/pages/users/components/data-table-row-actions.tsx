@@ -1,21 +1,21 @@
-import {DotsHorizontalIcon} from '@radix-ui/react-icons'
-import {Row} from '@tanstack/react-table'
+import { DotsHorizontalIcon } from '@radix-ui/react-icons'
+import { Row } from '@tanstack/react-table'
 
-import {Button} from '@/components/custom/button'
+import { Button } from '@/components/custom/button'
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import {Link} from "react-router-dom";
-import {RepositoryFactory} from '@/api/repository-factory';
-import {AxiosResponse, HttpStatusCode} from 'axios';
-import {toast} from '@/components/ui/use-toast';
-import {useState} from 'react';
-import {NumberParam, useQueryParam} from 'use-query-params';
-import {useUser} from "@/lib/store/userStore.ts";
+import { Link } from 'react-router-dom'
+import { RepositoryFactory } from '@/api/repository-factory'
+import { AxiosResponse, HttpStatusCode } from 'axios'
+import { toast } from '@/components/ui/use-toast'
+import { useState } from 'react'
+import { NumberParam, useQueryParam } from 'use-query-params'
+import { useUser } from '@/lib/store/userStore.ts'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,154 +25,244 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
+} from '@/components/ui/alert-dialog'
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog.tsx'
+import { Label } from '@/components/ui/label.tsx'
+import { Input } from '@/components/ui/input.tsx'
 
 const UserRepository = RepositoryFactory.get('user')
 
 interface DataTableRowActionsProps<TData> {
-    row: Row<TData>
+  row: Row<TData>
 }
 
-export function DataTableRowActions<TData>({row}: DataTableRowActionsProps<TData>) {
-    const [v, setV] = useQueryParam('v', NumberParam);
-    const {setChangePlanData} = useUser();
-    const d: any = row.original;
-    const [loading, setLoading] = useState(false);
-    const [openChangeLicenseKey, setOpenLicenseKey] = useState(false);
+export function DataTableRowActions<TData>({
+  row,
+}: DataTableRowActionsProps<TData>) {
+  const [v, setV] = useQueryParam('v', NumberParam)
+  const { setChangePlanData } = useUser()
+  const d: any = row.original
+  const [loading, setLoading] = useState(false)
+  const [openChangeLicenseKey, setOpenLicenseKey] = useState(false)
+  const [openChangeDevice, setOpenDevice] = useState(false)
+  const [deviceId, setDeviceId] = useState('')
 
-    const lockUser = () => {
-        if (loading) return;
-        setLoading(true)
-        UserRepository.lock(d.id)
-            .then((resp: AxiosResponse) => {
-                if (resp.status === HttpStatusCode.Ok) {
-                    toast({
-                        title: 'Khóa người dùng thành công'
-                    })
-                    setV((v ?? 0) + 1)
-                } else {
-                    toast({
-                        title: 'Khóa người dùng thất bại. Vui lòng thử lại',
-                        variant: 'destructive'
-                    })
-                }
-            }).catch(() => {
-            toast({
-                title: 'Khóa người dùng thất bại. Vui lòng thử lại',
-                variant: 'destructive'
-            })
-        }).finally(() => {
-            setLoading(false)
+  const lockUser = () => {
+    if (loading) return
+    setLoading(true)
+    UserRepository.lock(d.id)
+      .then((resp: AxiosResponse) => {
+        if (resp.status === HttpStatusCode.Ok) {
+          toast({
+            title: 'Khóa người dùng thành công',
+          })
+          setV((v ?? 0) + 1)
+        } else {
+          toast({
+            title: 'Khóa người dùng thất bại. Vui lòng thử lại',
+            variant: 'destructive',
+          })
+        }
+      })
+      .catch(() => {
+        toast({
+          title: 'Khóa người dùng thất bại. Vui lòng thử lại',
+          variant: 'destructive',
         })
-    }
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }
 
-    const unlockUser = () => {
-        if (loading) return;
-        setLoading(true)
-        UserRepository.unlock(d.id)
-            .then((resp: AxiosResponse) => {
-                if (resp.status === HttpStatusCode.Ok) {
-                    toast({
-                        title: 'Mở khóa người dùng thành công'
-                    })
-                    setV((v ?? 0) + 1)
-                } else {
-                    toast({
-                        title: 'Mở khóa người dùng thất bại. Vui lòng thử lại',
-                        variant: 'destructive'
-                    })
-                }
-            }).catch(() => {
-            toast({
-                title: 'Mở khóa người dùng thất bại. Vui lòng thử lại',
-                variant: 'destructive'
-            })
-        }).finally(() => {
-            setLoading(false)
+  const unlockUser = () => {
+    if (loading) return
+    setLoading(true)
+    UserRepository.unlock(d.id)
+      .then((resp: AxiosResponse) => {
+        if (resp.status === HttpStatusCode.Ok) {
+          toast({
+            title: 'Mở khóa người dùng thành công',
+          })
+          setV((v ?? 0) + 1)
+        } else {
+          toast({
+            title: 'Mở khóa người dùng thất bại. Vui lòng thử lại',
+            variant: 'destructive',
+          })
+        }
+      })
+      .catch(() => {
+        toast({
+          title: 'Mở khóa người dùng thất bại. Vui lòng thử lại',
+          variant: 'destructive',
         })
-    }
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }
 
   const updateLicenseKey = () => {
-    if (loading) return;
+    if (loading) return
     setLoading(true)
     UserRepository.updateLicenseKey(d.id)
       .then((resp: AxiosResponse) => {
         if (resp.status === HttpStatusCode.Ok) {
           toast({
-            title: 'Cập nhật mã license người dùng thành công'
+            title: 'Cập nhật mã license người dùng thành công',
           })
           setV((v ?? 0) + 1)
         } else {
           toast({
             title: 'Cập nhật mã người dùng thất bại. Vui lòng thử lại',
-            variant: 'destructive'
+            variant: 'destructive',
           })
         }
-      }).catch(() => {
-      toast({
-        title: 'Cập nhật mã người dùng thất bại. Vui lòng thử lại',
-        variant: 'destructive'
       })
-    }).finally(() => {
-      setLoading(false)
-    })
+      .catch(() => {
+        toast({
+          title: 'Cập nhật mã người dùng thất bại. Vui lòng thử lại',
+          variant: 'destructive',
+        })
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
-    return (
-      <>
-        <DropdownMenu modal={false}>
-            <DropdownMenuTrigger asChild>
-                <Button
-                    variant='ghost'
-                    className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'
-                >
-                    <DotsHorizontalIcon className='h-4 w-4'/>
-                    <span className='sr-only'>Open menu</span>
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align='end' className='w-[260px]'>
-                <DropdownMenuItem asChild>
-                    <Link to={`/user/log/${row.getValue('username')}`}>
-                        Xem log gửi tin nhắn
-                    </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                    <Link to={`/user/${row.getValue('id')}`}>
-                        Xem lịch sử hoạt động
-                    </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator/>
-                <DropdownMenuItem onClick={() => {
-                    setChangePlanData(d)
-                }}>
-                    Cập nhật license cho người dùng
-                </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setOpenLicenseKey(true)}>
-                Cập nhật mã license
-              </DropdownMenuItem>
-                <DropdownMenuSeparator/>
-                {d.status === 'ACTIVE' ? <DropdownMenuItem onClick={lockUser}>
-                        Khóa người dùng
-                    </DropdownMenuItem>
-                    : <DropdownMenuItem onClick={unlockUser}>
-                        Mở khóa người dùng
-                    </DropdownMenuItem>}
-            </DropdownMenuContent>
-        </DropdownMenu>
-        <AlertDialog open={openChangeLicenseKey} onOpenChange={setOpenLicenseKey}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Bạn có chắn chắn muốn cập nhật mã của người dùng này?</AlertDialogTitle>
-              <AlertDialogDescription>
-                Khi cập nhật mã của người dùng này. Mã cũ sẽ hết hạn ngay lập tức.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Đóng</AlertDialogCancel>
-              <AlertDialogAction onClick={updateLicenseKey}>Tiếp tục</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-        </>
-    )
+  const updateDeviceId = () => {
+    if (!deviceId || deviceId.length == 0) {
+      toast({
+        title: 'Mã thiết bị không được để trống',
+        variant: 'destructive',
+      })
+    }
+    if (loading) return
+    setLoading(true)
+    UserRepository.updateDeviceId(d.id, {
+      username: d.username,
+      deviceId: deviceId,
+    })
+      .then((resp: AxiosResponse) => {
+        if (resp.status === HttpStatusCode.Ok) {
+          toast({
+            title: 'Cập nhật mã thiết bị người dùng thành công',
+          })
+          setV((v ?? 0) + 1)
+        } else {
+          toast({
+            title: 'Cập nhật mã thiết bị người dùng thất bại. Vui lòng thử lại',
+            variant: 'destructive',
+          })
+        }
+      })
+      .catch(() => {
+        toast({
+          title: 'Cập nhật mã thiết bị người dùng thất bại. Vui lòng thử lại',
+          variant: 'destructive',
+        })
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }
+
+  return (
+    <>
+      <DropdownMenu modal={false}>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant='ghost'
+            className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'
+          >
+            <DotsHorizontalIcon className='h-4 w-4' />
+            <span className='sr-only'>Open menu</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align='end' className='w-[260px]'>
+          <DropdownMenuItem asChild>
+            <Link to={`/user/log/${row.getValue('username')}`}>
+              Xem log gửi tin nhắn
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to={`/user/${row.getValue('id')}`}>
+              Xem lịch sử hoạt động
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() => {
+              setChangePlanData(d)
+            }}
+          >
+            Cập nhật license cho người dùng
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setOpenLicenseKey(true)}>
+            Cập nhật mã license
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setOpenDevice(true)}>
+            Cập nhật mã thiết bị
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          {d.status === 'ACTIVE' ? (
+            <DropdownMenuItem onClick={lockUser}>
+              Khóa người dùng
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuItem onClick={unlockUser}>
+              Mở khóa người dùng
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <AlertDialog open={openChangeLicenseKey} onOpenChange={setOpenLicenseKey}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Bạn có chắn chắn muốn cập nhật mã của người dùng này?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Khi cập nhật mã của người dùng này. Mã cũ sẽ hết hạn ngay lập tức.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Đóng</AlertDialogCancel>
+            <AlertDialogAction onClick={updateLicenseKey}>
+              Tiếp tục
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <Dialog open={openChangeDevice} onOpenChange={setOpenDevice}>
+        <form>
+          <DialogContent className='sm:max-w-[425px]'>
+            <DialogHeader>
+              <DialogTitle>Cập nhật mã thiết bị người dùng</DialogTitle>
+            </DialogHeader>
+            <div className='grid gap-4'>
+              <div className='grid gap-3'>
+                <Label htmlFor='name-1'>Mã thiết bị</Label>
+                <Input value={deviceId} onChange={(e) => setDeviceId(e.target.value)} />
+              </div>
+            </div>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant='outline'>Đóng</Button>
+              </DialogClose>
+              <Button onClick={updateDeviceId}>Lưu lại</Button>
+            </DialogFooter>
+          </DialogContent>
+        </form>
+      </Dialog>
+    </>
+  )
 }
