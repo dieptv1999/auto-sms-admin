@@ -194,7 +194,7 @@ export function DataTableRowActions<TData>({
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link to={`/user/${row.getValue('id')}`}>
+            <Link to={`/user/${(row.original as any)?.id}`}>
               Xem lịch sử hoạt động
             </Link>
           </DropdownMenuItem>
