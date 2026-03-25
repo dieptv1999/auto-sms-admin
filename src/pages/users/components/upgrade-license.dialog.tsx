@@ -62,7 +62,7 @@ export default function UpgradeLicenseDialog() {
     }, [changePlanData]);
 
     return (
-        <Dialog open={!!changePlanData} onOpenChange={() => setChangePlanData(null)}>
+        <Dialog modal={false} open={!!changePlanData} onOpenChange={() => setChangePlanData(null)}>
             <DialogContent className="">
                 <DialogTitle>Cập nhật license người dùng</DialogTitle>
                 <Form {...form}>
