@@ -80,7 +80,7 @@ export default function UpgradeLicenseDialog() {
                                 </FormItem>
                             )}
                         />
-                        <Button className="w-full" type="submit">Cập nhật</Button>
+                        <Button className="w-full !mt-2" type="submit">Cập nhật</Button>
                     </form>
                 </Form>
             </DialogContent>

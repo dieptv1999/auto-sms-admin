@@ -58,7 +58,7 @@ export function DateTimePicker24h({ value, onChange }: { value?: Date, onChange:
                     )}
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
+            <PopoverContent className="w-auto p-0" sideOffset={-90}>
                 <div className="sm:flex">
                     <Calendar
                         mode="single"
